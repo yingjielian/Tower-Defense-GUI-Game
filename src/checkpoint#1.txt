@@ -1,0 +1,177 @@
+The Tower Defense Project
+Checkpoint #1
+
+This assignment is worth 100 points and is due on Wednesday, March 29 at 7:00 PM.  Because this checkpoint is part of a larger project, the assignment must be completed.  Students will be unable to complete future assignments until they complete this checkpoint.
+
+As always, your solutions should be well formatted and commented, with title comments, JavaDoc comments, proper indenting, whitespace, and good choice of variable names.  Deductions are at the discretion of the TAs.
+
+Overview
+
+For the next three or four weeks, you will be working to complete a "tower defense" style video game.  Please spend a few minutes (not more than an hour) familiarizing yourself with this game:
+
+Bloons Tower Defense 3 (Links to an external site.)
+
+Note:  You need to scroll down to see the game, and you need to have 'Flash' installed and enabled in your browser to play this game.  There are instructions on the coolmath-games website for installing flash.
+
+Tower defense games have a general theme:  An adversary advances along a path to some goal.  You place towers (defensive structures) along the path to defend it (to prevent your adversary from reaching their goal).  As you defeat your adversary, you earn income for purchasing additional towers or tower upgrades.  The game ends when a certain number of adversaries reach their goal.
+
+Tower defense games usually have a variety of adversaries, as well as several different defensive structures.  The player must carefully purchase a mix of different tower types, and place them in ideal positions to successfully thwart the adversary. 
+
+A tower defense game makes a great Java project.  The game can be reduced to a handful to classes that represent the various game elements.  Students often want to write the game logic first (to allow play, to allow user control, etc.)  Unfortunately, this 'play first' approach to writing a game takes much more work.  Instead, we will begin by writing classes that provide support to the game.  Then, when we are ready to write code to allow the game to be played, we will have some powerful classes written to help us create the game quickly.
+
+In the first stage, students will write one Java class to represent a path (in screen coordinates).  When this class is complete, we will be able to use it to easily represent the location and motion of the adversaries.
+
+Later stages will focus on object drawing and animating, GUI menus and elements, and simulation and collisions.  Our finished project will be a simple, but quite playable tower defense game.  It will make use of object-oriented techniques to break a complex task into simpler components, and students who complete the entire project will have significant object-oriented programming skills.
+
+Note: Each different tower defense game has a theme.  For our project, I will provide artwork files that provide a simple theme.  Students may elect to produce their own artwork files to change the theme to any other non-violent, non-offensive theme, but this does not count as programming practice.  (Creating good artwork consumes a lot of time!)  Please do not forget to complete the programming tasks... ;)
+
+Also, students are expected to follow the requirements in each checkpoint.  While students may creatively adapt artwork themes, the programming requirements are not optional.
+
+Checkpoint #1
+Your goal for the first checkpoint is to create a class that represent paths, then to use this class to finish an application that shows a ball advancing along a path.  The application below shows the expected behavior of your completed assignment.  A background image is drawn to suggest the path, a line is drawn on top of the image to show the exact path, and a ball advances along the path.
+
+PathTester.jarView in a new window
+
+ (The file above is a self-executing jar file.  Download the .jar file and 'run' it.  (If you have Java installed, the jar file should self-execute when opened.) 
+
+Requirements for Checkpoint #1
+
+Follow the instructions below.  Some steps will have precise instructions that tell you exactly what to do, and other steps will require you to solve problems to implement methods or classes.  It is important that you follow the instructions precisely to guarantee that we can test your code.  (Package names and upper/lowercase letters matter.)  
+
+For full credit, your completed checkpoint must behave like the example program above, and your program structure must be as outlined below.  In addition, a few points will be reserved for code style and comments (as always).  
+
+Students may work in teams of two (but no more).  If you work in a team, you must program together at all times.  You may not work separately and combine code.  (If you don't know your partner, please work in the lab for personal safety reasons.)  All code/solutions must be written this semester by you.  You may follow my examples, but you may not use substantive code from other teams, the internet, or from previous work of yours.  Write and design all new solution code.
+
+1. Set up a new Eclipse project:
+For this game, create a new Java project in Eclipse.  Name it "Tower Defense".
+
+Inside your new project, create two new Java packages.  Name one package "game", and the other package "resources".  It is important that these be Java packages and not just folders, so you must create them in Eclipse.  (The easiest way is to select the "src" directory in your project, right click it, and select new->package.)
+
+2. Set up and run a test application:
+Place the following files in your project.  (I find it easiest to download them, then drag-and-drop them onto Eclipse into the correct package.)  Put these classes in the "game" package:
+
+PathTestApplication.javaPreview the documentView in a new window
+PathTestPanel.javaPreview the documentView in a new window
+Save the following image files in your "resources" package:
+
+path_1.jpgView in a new window
+path_2.jpgView in a new window
+Note:  Students may use their own path image(s).  The only requirements are that the path image is about 600x600 pixels, that it contains a moderately-complex curved path, and that it is readable by Java.
+
+The class files are the start of the test application (explained in March 24 lecture, but not on video).  The PathTestApplication creates a new window (a JFrame), and adds a PathTestPanel to the content area.  The PathTestPanel class loads one of the path images, then draws it when the panel is drawn. 
+
+Once you have the code in place, run the PathTestApplication class to make sure it works.  You should see a window appear, and the contents of the window should be the path_2.jpg image.
+
+Students wanting a simpler challenge can use the path_1.jpg image, or use their own curved path image.  You should adapt the code and image filename as necessary to match your choice of paths, but your images must be in the resources package in Eclipse.  (It is easy to drag-and-drop an image file into Eclipse.)
+
+3. Collect coordinates for a path:
+Your goal for this step is to figure out a series of (x, y) coordinates that, when connected and drawn on the path, will draw a line segment along the full length of the path, and then to record these coordinates (in order) in a text file.  My sample application shows a line segment that follows coordinates along the path.  Your path coordinates will be (should be) different.
+
+First, create an empty text file and save it in "resources/path_2.txt" in your project.  To do this, select File->New->Untitled Text File, then File->Save As, navigate to your project and the resources directory, name the file "path_2.txt", and save it.
+
+Next, figure out a sequence of coordinates that follow the path.  You may do this in any way that makes sense to you, such as using a paint program to examine the path, using a ruler, or adding a mouse listener to the panel that displays the coordinates of mouse clicks.  (I use this last technique, and I was easily able to figure out coordinates in just a few minutes by printing out locations of mouse clicks.)
+
+Finally, record the coordinates in the text file you created above.  First, type in an integer that indicates how many coordinates there are in the sequence.  Then, put two integers in the file for each coordinate.  A path that has three coordinates might look like this:
+
+    3
+    0 150
+    107 74
+    210 161
+You will read through this text file using a Scanner object, so it is important to not add any punctuation or text.
+
+4. Determine how you will store coordinates in your code:
+You will need to store (x, y) coordinates in your code.  There are several Java classes that can help with this, or you can write your own.  In my code I chose to use the Point class from the java.awt library.  It has helper methods that I found convenient.
+
+Determine what type of object you will use to store coordinates, then write a bit of test code to make sure you know how to store and retrieve coordinates from that kind of object.  You may remove this bit of test code at any time - we won't look for it.
+
+5. Create the class to read and store a path:
+The goal for this step is to create a class that will read in and represent a path.  Add a class named "Path" to your "game" package in your project.  Your class should declare one field (object variable) that holds the list of coordinates (named 'path').  Use an array or an ArrayList object.  Then, write a constructor and a method that implement these contracts:
+
+    /** This constructor does the following:
+     *     - It creates a new array (or ArrayList) to hold the path coordinates,
+     *          and stores it in the path variable.
+     *     - It reads a number of coordinates, n, from the scanner.
+     *     - It loops n times, each time scanning a coordinate x,y pair, creating an
+     *         object to represent the coordinate, and storing the coordinate object in the path.
+     * 
+     * @param s  a Scanner set up by the caller to provide a list of coordinates
+     */
+
+
+    /**
+      * Draws the current path to the screen (to wherever the graphics object points)
+      * using a highly-visible color.
+      * 
+      * @param g   a graphics object
+      */  
+  
+To test your class, add code to the TestPanel constructor to build one of your PathPoints objects and add code to the TestPanel paint method to draw the path object (by calling the appropriate method).  When you complete this step, you should be successfully loading and drawing the path over the background image.
+
+6. Add a method that calculates the total path length:
+Implement the following method in the Path class:
+
+/** 
+ * Returns the total length of the path. Since the path
+ * is specified using screen coordinates, the length is
+ * in pixel units (by default).
+ * 
+ * @return the length of the path
+ */
+ public double getPathLength ()
+Briefly test it.  (In the constructor, after you build the path, you can now print out the path length easily.)
+
+7. Add a method that calculates the path length:
+Implement the following method in the Path class:
+
+/** 
+ * Given a percentage between 0% and 100%, this method calculates
+ * the location along the path that is exactly this percentage
+ * along the path. The location is returned in a Point object
+ * (int x and y), and the location is a screen coordinate.
+ * 
+ * If the percentage is less than 0%, the starting position is
+ * returned. If the percentage is greater than 100%, the final
+ * position is returned.
+ * 
+ * If students don't want to use Point objects, they may 
+ * write or use another object to represent coordinates. 
+ *
+ * Caution: Students should never directly return a Point object
+ * from a path list. It could be changed by the outside caller.
+ * Instead, always create and return new point objects as
+ * the result from this method.
+ * 
+ * @param percentTraveled a distance along the path
+ * @return the screen coordinate of this position along the path
+ */
+ public Point getPathPosition (double percentTraveled)
+The goal for this step is to create a method that will help you compute an x, y position along the path.  The input parameter is specified as a percentage (0% to 100%, or 0.0 to 1.0) of the total distance traveled.  The x, y location of this position is returned from the method.  When you create game objects (such as balloons) that follow the path, you will be able to use this method to quickly find the x, y coordinates of a game object on the path.
+
+Each path can be thought of as a series of line segments.  As an object travels along the path, it will move along each line segment:
+
+ diagram1.gif
+
+In the diagram above, some game item is about 60% across the total path (and about 75% across segment #1).  
+
+Given a total percentage traveled, students can use the total path length and the length of each percentage to figure out which segment the object is currently in.  You'll need the total path length, and the length of the segments.  (These do not need to be permanently stored - compute them when needed and keep the results in local variables.)  
+
+Once you determine which segment you're in, determine the 'percentage across' the segment.  The percentage across the segment is just equal to the traveled distance divided by the total distance:
+
+ diagram2.gif
+
+Converting the 'percentage across' each segment to a position is relatively simple.  You can easily convert this percentage to a coordinate.  First, calculate the changes in X and Y for the segment (delta X and delta Y).  (Remember, deltaX is just endX - startX.)  You can then multiply dx and dy by the percentage, and add the resulting dx' and dy' to the segment start X and Y to determine the coordinates of the game item.  Use this diagram to help:
+
+ diagram3.gif 
+
+(I recommend trying it by hand on paper:  Pick coordinates for each endpoint, then use 0.40 (40%) for the game item, and see if you can compute the coordinates of the game item.)
+
+You may also use the weighted average method presented in class - the math is equivalent.
+
+Complete the method, and return the object that represents the x, y coordinates.
+
+To test it, call it from the paint method in our PathTestPanel class.  Send in a percentage, draw a circle (or an x) at that location, and see if the circle appears on the path at approximately the same location.  You can also draw dots at 1%, 2%, etc. along the entire path using this method to make sure it works.
+
+8. Animating a circle:
+In your PathTestPanel, add a field to store the percentage traveled for a single game object.  In the constructor, initialize the field, and set up and start a Timer object.   (I recommend a Timer delay of 16, which redraws 60 times a second.)  In the paint method, draw a small colored circle at the percentage specified by the field.  (You'll need to 'center' the circle, fillOval specifies x,y as the upper-left 'corner' of the circle.)  Finally, update the actionPerformed method so that when the Timer calls it, it updates the percentage traveled a small amount and redraws the screen.  (If you reach the end of the path, go back to the start.)
+
+This step is not complex - it's less than 15 lines of new code total.  If your classes are built properly, the circle will advance along the path, and you'll be done with coding for this assignment.
