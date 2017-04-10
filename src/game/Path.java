@@ -1,10 +1,8 @@
 package game;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Scanner;
-
 /**
  * This class is going to draw a visible path and a moving circle.
  * 
@@ -13,7 +11,6 @@ import java.util.Scanner;
  * @class CS-1410
  *
  */
-
 public class Path 
 {
 	private Point[] path;
@@ -44,7 +41,7 @@ public class Path
 			Point p = new Point(x, y);
 			path[i] = p;
 		}
-		System.out.println("Got here" +size); // Test if it works.
+		// System.out.println("Got here" +size); // Test if it works.
 	}
 
 	/**
@@ -56,9 +53,6 @@ public class Path
 	public void draw (Graphics g)
 	{
 		g.setColor(Color.YELLOW);
-
-
-
 		for (int i = 1; i < path.length; i++)
 		{
 			start = path[i-1];
@@ -68,7 +62,6 @@ public class Path
 			ex = end.x;
 			ey = end.y;
 			g.drawLine(sx, sy+1, ex, ey+1);
-
 		}
 	}
 
@@ -91,9 +84,7 @@ public class Path
 			ex = end.x;
 			ey = end.y;
 			totalLength += start.distance(end);
-
 		}
-
 		return totalLength;
 	}
 
@@ -120,14 +111,12 @@ public class Path
 	 */
 	public Point getPathPosition(double percentage)
 	{
-
-		System.out.println("in get path position");
 		// Special cases
 		if(percentage <= 0.0) // Start
 			return new Point(path[0]);
 		if(percentage >= 1.0) // End
 			return new Point(path[path.length-1]);
-		
+
 		double distanceToTravel = this.getPathLength() * percentage;
 		double segTravelled = 0;
 		double difference;
@@ -153,11 +142,9 @@ public class Path
 				atY = (int) (rate*sy + (1-rate)*ey);
 				break;
 			}
+			
 		}
-		System.out.println("x: " + atX + " : " + "y: " + atY); // Make the points are visible for me to debug.
+//		System.out.println("x: " + atX + " : " + "y: " + atY); // Make the points are visible for me to debug.
 		return new Point(atX, atY);
 	}
-
-
-
 }
