@@ -1,0 +1,164 @@
+Checkpoint #2
+Part 1:  Create a helper class for loading images:
+
+Requirements:  Write a ResourceLoader class to help you with loading images and paths.  When you are done, you should be able to use your ResourceLoader class like this:
+
+ResourceLoader loader = ResourceLoader.getLoader();  // Gets the resource loader object
+
+BufferedImage pic = loader.getImage("snail.png");    // Returns the image from resources/snail.png
+
+Path gardenPath = loader.getPath("path_2.txt");      // Builds a path object from resources/path_2.txt
+The "getImage" method in the ResourceLoader class must do the following:
+
+Check to see if this image has been already loaded (by looking for an entry with that name in a map).
+If the image has not been loaded before, it is loaded and stored in a map of loaded images.  (Use the name as the key and the image as the value.)
+Either way, the image is retrieved and returned to the caller.
+The "getPath" method in the ResourceLoader class has similar requirements:
+
+Check to see if this path has been already loaded (by looking for an entry with that name in a map).
+If the path has not been loaded before, a new Path object is built from that path file, and the Path object is stored in a map of Path objects.  (Again, use the name as the key and the Path object as the value.)
+Either way, a Path object (that corresponds to that path file) is returned to the caller
+This class helps us in two ways:
+
+You won't need to pre-load images into variables.  Instead, you keep one 'loader' object, and you access them just when needed.  This facilitates much easier-to-write code.
+Retrieval of images or paths will be very quick, except for the first time a resource is accessed.  (The first time a resource is accessed, it will be loaded from a file.  This won't matter, as our game only has a few small resources.)  
+Help and tips:   Before starting, make sure you know how to load images and paths.  In checkpoint #1, in the "PathTestPanel" class, I have code that does both of these.  You will soon move this code (or your own code) into your ResourceLoader class and modify it to load any image or path.
+
+To start, create an empty "ResourceLoader" class and add an empty default constructor. 
+
+Next, write an empty "getImage" method that takes a filename (a String) as a parameter and returns a BufferedImage object.  Then, copy in the lines of code from the PathTestPanel that load an image.  (You'll need to declare a local variable to hold the image object, and don't forget the try/catch block.)  Finally add a return statement to the end of the method to return the loaded image object.
+
+Adapt the "getImage" method so that instead of loading "path1.jpg", it will load any image.  You need to modify the statements in "getImage" so that the filename parameter is properly used to load the image.  (Remove "path1.jpg" from one expression, and combine strings as needed to build the complete name.)
+
+At this point you can test your code.  You may notice that we're not using a map to save images.  Still, you can and should test it.  The "getImage" method should load and return an image.  Remove the code from the PathTestPanel that loads an image and replace it with lines like this:
+
+  ResourceLoader loader = new ResourceLoader();
+  backdrop = loader.getImage("path1.jpg");
+Make sure that this executes correctly.  The backdrop image should still load (because your ResourceLoader class loads it).  Try loading a different image, and make sure it still works.  Again test your code to make sure the getImage method can load and use any existing image as a backdrop.
+
+Next, you will need a way to store images after they are loaded.  I recommend that you use a map that maps Strings to Images.  In your class, create a private variable to hold the map.  (Be careful - this should be a field, not a local variable.)  In the constructor, make a new HashMap object and store it in your map variable.  Remember, both the Map type and HashMap type have this form:  Map<keytype, valuetype>  You can use any object types for the keytype and valuetype, but for this step you'll use Strings and BufferedImages.
+
+Change your "getImage" method so that it checks to see if the requested image is in the map before loading it.  If it is, just get the image out of the map and return it early.  If the requested image is not in the map, load it (using your existing code), then put the image in the map and return it.
+
+This code is a little more difficult to test.  I recommend adding a "System.out.println" that prints a message every time you load an image from a file.  Then, in your PathTestPanel, try loading the backdrop twice or three times, or try loading the backdrop in paint.  You should only see your debugging message once.
+
+Next, replicate these ideas and create the required 'getPath' method.  Loading a path is a bit different, but the logic will be nearly identical.  (You'll need a second map.)
+
+Make sure both methods work before proceeding.
+
+Finally, it would be very nice if it were impossible to create multiple ResourceLoader objects.  If you create several new ResourceLoader objects, you'd create duplicate maps, and this would mean that resources could get loaded from a file twice or more (once by each ResourceLoader object).  
+
+The solution is that we only want a single ResourceLoader object, and we want all of our game code to share it.  This is easy to do:
+
+In your ResourceLoader class, create a static variable that can hold one ResourceLoader object:
+
+  static private ResourceLoader instance;
+Next, add this static method:
+
+  static public ResourceLoader getLoader()
+         {
+             if (instance == null)
+               instance = new ResourceLoader ();
+    
+             return instance;
+         }
+    
+Finally, change your ResourceLoader constructor to be private.
+By making the constructor private, no code outside of the class can make an ResourceLoader object.  If someone wants an ResourceLoader object, they will have to call our "getLoader" static method like this:
+
+  ResourceLoader loader = ResourceLoader.getLoader();  // Gets the resource loader object
+Our getLoader method is written such that it will only create one ResourceLoader object (ever).  (Look at it.)  This is called the singleton programming pattern, and it guarantees us that only one ResourceLoader will ever be created.
+
+Adapt your PathTestPanel to use the "getLoader" method (instead of creating new ResourceLoader objects), and test it.
+
+Before proceeding to the next part, make sure your ResourceLoader class works on different kinds of images and paths, and that it only loads an image or path from disk once even if it is called 10 times to load the same image or path.
+
+Note: Your finished class will only have about thirty statements total among the methods.
+
+Part 2:  Rearrange the classes to prepare the game structure
+
+Requirements:  
+
+Combine the test application and JPanel classes into a single class called TowerDefense.
+Create a GameState class with a void update() and void draw(Graphics g) method.
+In the game state, keep track of exactly the same information as you do for the moving circle (a percentage and a path).  In the update method, advance it.  In the draw method, draw a small image (from a file) where the circle would be.
+The goal is to prepare the structure of the Java files that we'll use for the game, and to remove the path test code.  Important:  before proceeding, make a backup copy of your work.  You'll be significantly changing your code and you don't want to lose your previous version.  Emailing it to yourself is an easy way to back it up, or you can copy it into a separate Eclipse project.
+
+The following instructions assume your class structure is similar to mine.  You are not required to follow my steps exactly.  If you added functionality, variables, or methods that are different from mine, you'll need to adapt your solution appropriately.  I highly recommend that you structure your solution in a manner that is similar to mine, as it will be simpler.  (See my checkpoint #1 solution.)
+
+Step 1:  First, find your class that extends JPanel and name it TowerDefense.  The easiest way to do this is to 'refactor' it (rename it using the 'refactor' tool in Eclipse - right click the file or class name).  Eclipse will change the filename, the class name, and the name everywhere the class is used.  Brilliant.
+
+Verify that your application 'run' method builds a TowerDefense object as it builds the GUI - check the code.
+
+Next, make the TowerDefense class (your class that extends JPanel) implement the Runnable interface.  (This will cause an error - you'll fix it soon.)
+
+Cut-and-paste your main method and run method from the application class into the TowerDefense class.  Change the main method so that it builds a TowerDefense object for running.  Move the code from the TowerDefense constructor to the end of the 'run' method.  This causes a problem in that the object's size is set after the JFrame is packed.  Rearrange this so the panel size is set prior to packing.
+
+(The constructor should now be empty.  Remove the constructor.
+
+I recommend the following organization order for the TowerDefense class:
+
+Fields (variables) at the top of the class.  Remember, any TowerDefense object will have these variables in its object.
+Put the main method next.  It's static, so it cannot access the fields (which require an object), but it runs first.
+No constructor, or an empty constructor.  You still build a TowerDefense object, but we'll use the 'run' method to initialize it.
+Put the run method next.  It contains the GUI-building code, and the other initialization code moved from the constructor (loading stuff, setting up the timer, listeners, etc.).
+Put the paint method next.  Game state drawing is done here, triggered by repaint calls.
+Put the actionPerformed method next.  Game updating is done here, triggered by the timer.
+Put any other event handlers at the end (mouse, etc. if needed).
+The original application class should now be empty - delete it.
+
+Clean up any errors and formatting problems and test it.  Your code should still work.  Remember, your application main method builds one TowerDefense object.  It is runnable, it is a JPanel, it is part of the GUI, it listens to its own events, and it will connect the GUI actions (painting, events, etc.) to future game logic code.
+
+Step 2:  The TowerDefense class has a little too much going on in it.  The next step is to take things out of it.  Specifically, the background and ball drawing does not belong there, and it would be nice to prepare a class to represent the 'state' of the game.
+
+Create a class called GameState (in the game package).  It should have a constructor, but not a main method.
+
+In addition to the empty constructor, add two empty methods:
+
+public void update ()
+{
+}
+
+public void draw (Graphics g)
+{
+}
+Next, in the TowerDefense class, create a field to hold the game state:
+
+private GameState game;
+In the TowerDefense run method, build a new GameState object and store it in the field.
+
+Move the entire contents of the TowerDefense paint method into the GameState draw method.   In the paint method, just call the draw method on your game field.  (This way, painting still happens, but it happens in the GameState class instead.)
+
+Move the code that sets up the path, images, and circle into the GameState constructor.  You may need to move fields from the TowerDefense class as well.  Only move code that is setting up images, positions, or paths for the game.  Do not move the code that sets up the timer, the GUI, or the listeners.
+
+Move the code from actionPerformed that updates the circle position into the update method in the GameState class.  Instead, just have actionPerformed update the game object and repaint, like this:
+
+    game.update();
+    repaint();
+Test your changes.  The circle should still move.  All you did was move code and variables from TowerDefense into GameState.  The GUI setup, event, listener, and timer code is still in TowerDefense.  The drawing and updating is in GameState.  Perfect!  This separation will make future code changes easier.
+
+Finally, replace the drawing of the circle with the drawing of a small image.  (In my game it will be a snail.)  This may seem tough, but it's not.  You've got a class for loading images, and in one line of code you can get the image and immediately draw it where the circle was.  (See the draw method in GameState.)  A little work may be needed to properly center the drawing on the path, as images are anchored by their upper-left corner.
+
+Submitting your work
+Create a 'jar' file containing your work:
+
+Select File->Export.  A dialog with an expandable list will appear, open the Java item and select JAR file.  The JAR file dialog will appear.
+
+In the dialog, select these settings:
+
+Select (put a checkmark in) only your 'Tower Defense' project to export the entire project.
+Select (put a checkmark in) "Export generated class files and resources".
+Select (put a checkmark in) "Export Java source files and resources".
+Double-check: Make sure the correct project is fully selected (all files should be included), and that you are including your source code in the JAR.
+
+Type in or browse to a location to save your .jar file.  Name the .jar file "checkpoint2.jar".
+
+Finish creating the .jar file.
+
+This creates a .zipped up version of your Java project (with a bit of additional data in it).  All of your source code, images, and compiled code should now be contained in the .jar file.  (For advanced students, you can rename a .jar file to be a .zip file if you want to examine the contents.  Just remember to rename it back to .jar before you submit it.)
+
+Submit your .jar file.
+
+Caution:  While you may experiment with self-executing .jar files, do not submit .jar files built using the self-executing .jar file option.  They will not contain your source code.
+
+Previous
