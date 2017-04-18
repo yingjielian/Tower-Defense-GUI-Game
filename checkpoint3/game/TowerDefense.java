@@ -23,7 +23,7 @@ import javax.swing.Timer;
  * in this class).
  * 
  * @author Peter Jensen and <<Yingjie Lian & Nan Ying>>
- * @version March 29, 2017  (Update this)
+ * @version 04/16/2017
  * @class CS-1410
  */
 public class TowerDefense extends JPanel implements Runnable, ActionListener,
@@ -68,6 +68,7 @@ public class TowerDefense extends JPanel implements Runnable, ActionListener,
 
 		f.setContentPane(this);
 
+		// Expand the width by 200 in order to draw a menu bar on the panel.
 		Dimension panelSize = new Dimension(game.getWidth() + 200, game.getHeight());
 		
 		this.setMinimumSize(panelSize);
@@ -83,7 +84,6 @@ public class TowerDefense extends JPanel implements Runnable, ActionListener,
 
 		Timer t = new Timer(17, this);
 		t.start();
-		
 	}
 
 	// Methods
@@ -112,48 +112,33 @@ public class TowerDefense extends JPanel implements Runnable, ActionListener,
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-	}
+	public void mouseClicked(MouseEvent e) {}
 
 	@Override
 	/**
 	 * When mouse pressed on the path, get the x and y for that point, 
 	 * and print out on console panel in order to build the path.
 	 */
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(MouseEvent e) 
+	{
 		game.setMousePressed();
-
 	}
-
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void mouseReleased(MouseEvent e) {}
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void mouseEntered(MouseEvent e) {}
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void mouseExited(MouseEvent e) {}
+	
 	@Override
-	public void mouseDragged(MouseEvent e) {
-		System.out.println("NBa");
+	/**
+	 * Invoked when a mouse button is pressed on a component and then dragged.
+	 * Also, set the point.
+	 */
+	public void mouseDragged(MouseEvent e) 
+	{
 		game.setMousePos(e.getPoint());
-		
 	}
-
 	@Override
-	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseMoved(MouseEvent e) {}
 }

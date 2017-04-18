@@ -3,7 +3,16 @@ package game;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-
+/**
+ * This class is a subclass of Enemy(super class).
+ * This class does two functions:
+ *    -Load the image for enemy car.
+ *    -Change the speed of the enemy car.
+ * @author Yingjie Lian & Nan Ying
+ * @class CS-1410
+ * @version 04/16/2017
+ *
+ */
 public class EnemySCargo extends Enemy implements Animatable 
 {
 	private BufferedImage carImage;
@@ -12,7 +21,9 @@ public class EnemySCargo extends Enemy implements Animatable
 	{
 		super(pathName, g);
 		this.Enemyimage = ResourceLoader.getLoader().getImage("resources/s-cargo.png");
-		this.diffPercentage = 0.003;
+		
+		// Change the percentage to 0.3% in order to change the 
+		// enemy cars' speed that shows on screen.
+		this.diffPercentage = 0.003; 
 	}
-
 }
